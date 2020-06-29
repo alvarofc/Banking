@@ -46,6 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.POST,"/address/**").hasAuthority( "ADMIN")
                 .mvcMatchers(HttpMethod.POST, "/creditcard").hasAuthority("ADMIN")
                 .mvcMatchers(HttpMethod.PATCH, "/creditcard/**").hasAnyAuthority("ADMIN", "THIRD_PARTY","USER")
+                .mvcMatchers(HttpMethod.PATCH, "/withdraw/**").hasAnyAuthority("ADMIN", "THIRD_PARTY","USER")
+                .mvcMatchers(HttpMethod.PATCH, "/deposit/**").hasAnyAuthority("ADMIN", "THIRD_PARTY","USER")
                 .mvcMatchers(HttpMethod.POST, "/third-party").hasAuthority("ADMIN")
                 .mvcMatchers(HttpMethod.POST, "/transfer/**").hasAuthority("USER")
                 .mvcMatchers( "/all-transactions").hasAuthority("ADMIN")

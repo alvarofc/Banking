@@ -37,24 +37,24 @@ public class Account {
     public Account() {
     }
 
-    public Account(@NotNull String balance, @NotNull AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal minimumBalance, BigDecimal monthlyMaintenanceFee) throws Exception {
+    public Account(@NotNull String balance, @NotNull AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal minimumBalance, BigDecimal maintenanceFee) throws Exception {
         setBalance(balance);
         this.secretKey =  ThreadLocalRandom.current().nextInt(1000, 9999 + 1);
         setPrimaryOwner(primaryOwner);
         setSecondaryOwner(secondaryOwner);
         setMinimumBalance(minimumBalance);
-        setMaintenanceFee(monthlyMaintenanceFee);
+        setMaintenanceFee(maintenanceFee);
         setStatus(Status.ACTIVE);
         this.chargedDate = null;
     }
 
-    public Account(@NotNull  String balance, @NotNull AccountHolder primaryOwner, BigDecimal minimumBalance, BigDecimal monthlyMaintenanceFee) throws Exception {
+    public Account(@NotNull  String balance, @NotNull AccountHolder primaryOwner, BigDecimal minimumBalance, BigDecimal maintenanceFee) throws Exception {
         setBalance(balance);
         this.secretKey =  ThreadLocalRandom.current().nextInt(1000, 9999 + 1);
         setPrimaryOwner(primaryOwner);
         setSecondaryOwner(secondaryOwner);
         setMinimumBalance(minimumBalance);
-        setMaintenanceFee(monthlyMaintenanceFee);
+        setMaintenanceFee(maintenanceFee);
         setStatus(Status.ACTIVE);
         this.chargedDate = null;
     }

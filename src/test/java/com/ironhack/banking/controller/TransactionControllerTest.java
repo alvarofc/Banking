@@ -13,12 +13,16 @@ import com.ironhack.banking.repository.AddressRepository;
 import com.ironhack.banking.repository.TransactionRepository;
 import com.ironhack.banking.security.CustomSecurityUser;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -40,6 +44,7 @@ class TransactionControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     CustomSecurityUser admin;
+    CustomSecurityUser user;
 
     @Autowired
     TransactionRepository repository;
@@ -66,16 +71,11 @@ class TransactionControllerTest {
         Transaction tr1 = new Transaction(acc1, acc2, "200");
         repository.save(tr1);
         admin = new CustomSecurityUser(new User("test", "test", Role.ADMIN));
+        user = new CustomSecurityUser(new User("test", "test", Role.USER));
 
     }
 
-    @AfterEach
-    void tearDown() {
-        addressRepository.deleteAll();
-        accountHolderRepository.deleteAll();
-        accountRepository.deleteAll();
-        repository.deleteAll();
-    }
+
 
     @Test
     void findAll() throws Exception {
@@ -84,7 +84,19 @@ class TransactionControllerTest {
     }
 
     @Test
-    void makeTransfer() {
+    void findAll_noUser() throws Exception {
+        mockMvc.perform(get("/all-transactions")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void makeTransfer() throws Exception {
+        AccountHolder ah1 = new AccountHolder("Paco", new Date(), null);
+        Checking acc1 = new Checking("2000", ah1);
+        Checking acc2 = new Checking("3000", ah1);
+        Transaction tr1 = new Transaction(acc1, acc2, "20");
+        MvcResult result =  mockMvc.perform(post("/transfer").with(user(user)).content(objectMapper.writeValueAsString(tr1))
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
+        assertTrue(result.getResponse().getContentAsString().contains("Paco"));
     }
 
     @Test

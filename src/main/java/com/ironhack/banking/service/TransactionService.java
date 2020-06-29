@@ -50,6 +50,7 @@ public class TransactionService {
         Transaction trans = new Transaction(transaction.getOrderingAccount(), transaction.getBeneficiaryAccount(),transaction.getAmount().getAmount().toString());
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = ((User) principal);
+        LOGGER.warn(principal);
         if (senderAccount.getBalance().getAmount().compareTo(transaction.getAmount().getAmount()) <0) {
             LOGGER.info("Not enough funds to transfer in account" + senderAccount.getId());
             throw new Exception("Not enough funds");
@@ -58,9 +59,6 @@ public class TransactionService {
             accountService.save(senderAccount);
             LOGGER.info("Suspicious activity in account: " + senderAccount.getId());
             throw new Exception("Your account has been frozen due to irregular activities. Get in touch with your local branch.");
-        }else if(user.getRol() != Role.ADMIN &&  user.getId() != transaction.getOrderingAccount().getId()) {
-
-            throw new Exception("Not allowed to operate in this account");
         }
         else if (senderAccount.getMinimumBalance() != null && senderAccount.getBalance().getAmount().subtract(transaction.getAmount().getAmount()).compareTo(senderAccount.getMinimumBalance())<0){
             senderAccount.getBalance().decreaseAmount(transaction.getAmount().increaseAmount(senderAccount.getPENALTYFEE()));
@@ -94,9 +92,8 @@ public class TransactionService {
             accountService.save(account);
             LOGGER.info("Suspicious activity in account: " +id);
             throw new Exception("Your account has been frozen due to irregular activities. Get in touch with your local branch.");
-        }else if(!System.getProperty("user.rol").equals("ADMIN") && !System.getProperty("user.accountHolderId").equals(id.toString())) {
-            throw new Exception("Not allowed to operate in this account");
-        }else if (account.getMinimumBalance() != null && account.getBalance().getAmount().subtract(money.getAmount()).compareTo(account.getMinimumBalance())<0){
+        }
+        else if (account.getMinimumBalance() != null && account.getBalance().getAmount().subtract(money.getAmount()).compareTo(account.getMinimumBalance())<0){
             account.getBalance().decreaseAmount(money.getAmount().add(account.getPENALTYFEE()));
             accountService.save(account);
             transactionRepository.save(trans);

@@ -20,10 +20,4 @@ public class UserController {
         return userService.createUser(user);
     }
 
-
-    @GetMapping("/salesperson")
-    @ResponseStatus(HttpStatus.OK)
-    public List<User> viewAllSalesPerson() {
-        return userService.viewAllSalesPerson();
-    }
 }
