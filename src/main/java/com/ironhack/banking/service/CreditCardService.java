@@ -11,9 +11,16 @@ public class CreditCardService {
     @Autowired
     CreditCardRepository creditCardRepository;
 
-    public CreditCard save(CreditCard creditCard) throws Exception {
+    public CreditCard saveNew(CreditCard creditCard) throws Exception {
         CreditCard newCred = new CreditCard(creditCard.getBalance().getAmount().toString(), creditCard.getPrimaryOwner(), creditCard.getSecondaryOwner());
         return creditCardRepository.save(newCred);
     }
-    
+    public CreditCard save(CreditCard creditCard) throws Exception {
+        return creditCardRepository.save(creditCard);
+    }
+
+    public CreditCard findById(Integer id) throws Exception {
+        return creditCardRepository.findById(id).orElseThrow(()-> new Exception("No Credit Card with that id"));
+    }
+
 }

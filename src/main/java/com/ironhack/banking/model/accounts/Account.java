@@ -39,20 +39,21 @@ public class Account {
     public Account(@NotNull String balance, @NotNull AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal minimumBalance, BigDecimal monthlyMaintenanceFee) throws Exception {
         setBalance(balance);
         this.secretKey =  ThreadLocalRandom.current().nextInt(1000, 9999 + 1);
-        this.primaryOwner = primaryOwner;
-        this.secondaryOwner = secondaryOwner;
-        this.minimumBalance = minimumBalance;
-        this.monthlyMaintenanceFee = monthlyMaintenanceFee;
-        this.status = Status.ACTIVE;
+        setPrimaryOwner(primaryOwner);
+        setSecondaryOwner(secondaryOwner);
+        setMinimumBalance(minimumBalance);
+        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
+        setStatus(Status.ACTIVE);
     }
 
     public Account(@NotNull  String balance, @NotNull AccountHolder primaryOwner, BigDecimal minimumBalance, BigDecimal monthlyMaintenanceFee) throws Exception {
         setBalance(balance);
         this.secretKey =  ThreadLocalRandom.current().nextInt(1000, 9999 + 1);
-        this.primaryOwner = primaryOwner;
-        this.minimumBalance = minimumBalance;
-        this.monthlyMaintenanceFee = monthlyMaintenanceFee;
-        this.status = Status.ACTIVE;
+        setPrimaryOwner(primaryOwner);
+        setSecondaryOwner(secondaryOwner);
+        setMinimumBalance(minimumBalance);
+        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
+        setStatus(Status.ACTIVE);
     }
 
     public Money getBalance() {

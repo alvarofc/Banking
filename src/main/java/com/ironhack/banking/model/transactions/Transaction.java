@@ -5,7 +5,6 @@ import com.ironhack.banking.model.tools.Money;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity

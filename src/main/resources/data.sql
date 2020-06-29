@@ -28,3 +28,6 @@ INSERT INTO credit_card VALUES
 (2, 0,"USD",current_timestamp(), 2000, 12,30,2, 1),
 (3, 500,"USD",current_timestamp(), 10000, 12,30,3, null),
 (4, 20,"USD",current_timestamp(), 600, 12,30,4, null);
+
+INSERT INTO user(id, password, rol, username) VALUES
+(1,  "$2a$10$08G9MoHmIElHEp33nrZxXehx1eJoDT5I9LMkGkTonZm3ca340s0Fe", "ADMIN","admin")
