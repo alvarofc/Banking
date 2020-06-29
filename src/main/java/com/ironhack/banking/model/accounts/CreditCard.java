@@ -28,6 +28,7 @@ public class CreditCard {
     private BigDecimal penaltyFee;
     @Temporal(TemporalType.TIMESTAMP)
     private final Date creationDate = new Date();
+    private Date chargedDate;
 
     public CreditCard() {
     }
@@ -39,6 +40,7 @@ public class CreditCard {
         this.creditLimit = new BigDecimal("100");
         this.interestRate = new BigDecimal("0.2");
         this.penaltyFee = new BigDecimal("40");
+        this.chargedDate = null;
     }
 
     public CreditCard(String balance, AccountHolder primaryOwner) throws Exception {
@@ -47,6 +49,7 @@ public class CreditCard {
         this.creditLimit = new BigDecimal("100");
         this.interestRate = new BigDecimal("0.2");
         this.penaltyFee = new BigDecimal("40");
+        this.chargedDate = null;
     }
 
     public Integer getId() {
@@ -120,5 +123,13 @@ public class CreditCard {
             throw new Exception("Values lower than 0 not allowed");
         }
         this.penaltyFee = penaltyFee;
+    }
+
+    public Date getChargedDate() {
+        return chargedDate;
+    }
+
+    public void setChargedDate(Date chargedDate) {
+        this.chargedDate = chargedDate;
     }
 }

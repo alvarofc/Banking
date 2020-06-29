@@ -10,10 +10,10 @@ INSERT INTO account_holder VALUES
 (3, "1985-07-07","Miguel Saavedra", 4, NULL),
 (4, "2001-01-02","Paco Merlo", 5, NULL);
 INSERT INTO account VALUES
-("checking", 1, 40, 1000, "USD",current_timestamp(), 250, 12, 5467, "ACTIVE",  0.2, 1, null),
-("checking", 2, 40, 20000, "USD",current_timestamp(), 250, 12, 4234, "ACTIVE",  0.2, 2, 1),
-("savings", 3, 40, 2000, "USD",current_timestamp(), 250, null, 5942, "ACTIVE",  0.2, 3, null),
-("student", 4, 40, 2000, "USD",current_timestamp(), null, null, 8593, "ACTIVE", 0.2, 4, null);
+("checking", 1, 40, 1000, "USD",null,current_timestamp(), 250, 12, 5467, "ACTIVE",  0.2, 1, null),
+("checking", 2, 40, 20000, "USD",null,current_timestamp(), 250, 12, 4234, "ACTIVE",  0.2, 2, 1),
+("savings", 3, 40, 2000, "USD",null,current_timestamp(), 250, null, 5942, "ACTIVE",  0.2, 3, null),
+("student", 4, 40, 2000, "USD",null,current_timestamp(), null, null, 8593, "ACTIVE", 0.2, 4, null);
 
 
 
@@ -29,5 +29,9 @@ INSERT INTO credit_card VALUES
 (3, 500,"USD",current_timestamp(), 10000, 12,30,3, null),
 (4, 20,"USD",current_timestamp(), 600, 12,30,4, null);
 
-INSERT INTO user(id, password, rol, username) VALUES
-(1,  "$2a$10$08G9MoHmIElHEp33nrZxXehx1eJoDT5I9LMkGkTonZm3ca340s0Fe", "ADMIN","admin")
+INSERT INTO user VALUES
+(1,  "$2a$10$08G9MoHmIElHEp33nrZxXehx1eJoDT5I9LMkGkTonZm3ca340s0Fe", "ADMIN","admin", null),
+(2, "$2a$10$R4dULbfDzfISbmsj0HxlwOP5r7sFDTyrQ5sOpPKQgI2HKec0Blroq", "USER", "user1", 1),
+(3, "$2a$10$R4dULbfDzfISbmsj0HxlwOP5r7sFDTyrQ5sOpPKQgI2HKec0Blroq", "USER", "user2", 2),
+(4, "$2a$10$R4dULbfDzfISbmsj0HxlwOP5r7sFDTyrQ5sOpPKQgI2HKec0Blroq", "USER", "user3", 3),
+(5, "$2a$10$R4dULbfDzfISbmsj0HxlwOP5r7sFDTyrQ5sOpPKQgI2HKec0Blroq", "USER", "user3", 4);

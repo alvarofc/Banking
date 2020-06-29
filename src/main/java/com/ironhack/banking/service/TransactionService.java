@@ -2,14 +2,18 @@ package com.ironhack.banking.service;
 
 import com.ironhack.banking.model.accounts.Account;
 import com.ironhack.banking.model.accounts.Checking;
+import com.ironhack.banking.model.enums.Role;
 import com.ironhack.banking.model.enums.Status;
 import com.ironhack.banking.model.tools.Money;
 import com.ironhack.banking.model.transactions.Transaction;
+import com.ironhack.banking.model.users.User;
 import com.ironhack.banking.repository.AccountRepository;
 import com.ironhack.banking.repository.TransactionRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -44,7 +48,8 @@ public class TransactionService {
         Account senderAccount = accountService.findById(transaction.getOrderingAccount().getId());
         Account receiverAccount = accountService.findById(transaction.getBeneficiaryAccount().getId());
         Transaction trans = new Transaction(transaction.getOrderingAccount(), transaction.getBeneficiaryAccount(),transaction.getAmount().getAmount().toString());
-
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = ((User) principal);
         if (senderAccount.getBalance().getAmount().compareTo(transaction.getAmount().getAmount()) <0) {
             LOGGER.info("Not enough funds to transfer in account" + senderAccount.getId());
             throw new Exception("Not enough funds");
@@ -53,6 +58,9 @@ public class TransactionService {
             accountService.save(senderAccount);
             LOGGER.info("Suspicious activity in account: " + senderAccount.getId());
             throw new Exception("Your account has been frozen due to irregular activities. Get in touch with your local branch.");
+        }else if(user.getRol() != Role.ADMIN &&  user.getId() != transaction.getOrderingAccount().getId()) {
+
+            throw new Exception("Not allowed to operate in this account");
         }
         else if (senderAccount.getMinimumBalance() != null && senderAccount.getBalance().getAmount().subtract(transaction.getAmount().getAmount()).compareTo(senderAccount.getMinimumBalance())<0){
             senderAccount.getBalance().decreaseAmount(transaction.getAmount().increaseAmount(senderAccount.getPENALTYFEE()));
@@ -86,8 +94,9 @@ public class TransactionService {
             accountService.save(account);
             LOGGER.info("Suspicious activity in account: " +id);
             throw new Exception("Your account has been frozen due to irregular activities. Get in touch with your local branch.");
-        }
-        else if (account.getMinimumBalance() != null && account.getBalance().getAmount().subtract(money.getAmount()).compareTo(account.getMinimumBalance())<0){
+        }else if(!System.getProperty("user.rol").equals("ADMIN") && !System.getProperty("user.accountHolderId").equals(id.toString())) {
+            throw new Exception("Not allowed to operate in this account");
+        }else if (account.getMinimumBalance() != null && account.getBalance().getAmount().subtract(money.getAmount()).compareTo(account.getMinimumBalance())<0){
             account.getBalance().decreaseAmount(money.getAmount().add(account.getPENALTYFEE()));
             accountService.save(account);
             transactionRepository.save(trans);

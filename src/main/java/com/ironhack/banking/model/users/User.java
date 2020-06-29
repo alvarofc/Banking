@@ -1,6 +1,7 @@
 package com.ironhack.banking.model.users;
 
 import com.ironhack.banking.model.enums.Role;
+import com.ironhack.banking.repository.AccountRepository;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,6 +18,8 @@ public class User {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Role rol;
+    @OneToOne(fetch = FetchType.EAGER)
+    private AccountHolder accountHolder;
 
     public User() {
     }
@@ -25,6 +28,13 @@ public class User {
         this.username = username;
         this.password = password;
         this.rol = rol;
+    }
+
+    public User(@NotNull String username, @NotNull String password, Role rol, AccountHolder accountHolder) {
+        this.username = username;
+        this.password = password;
+        this.rol = rol;
+        this.accountHolder = accountHolder;
     }
 
     public Integer getId() {

@@ -28,10 +28,11 @@ public class Account {
     private AccountHolder secondaryOwner;
     private BigDecimal minimumBalance;
     private final BigDecimal PENALTYFEE = new BigDecimal("40");
-    private BigDecimal monthlyMaintenanceFee;
+    private BigDecimal maintenanceFee;
     @Enumerated(EnumType.STRING)
     private Status status;
     private final Date creationDate = new Date();
+    private Date chargedDate;
 
     public Account() {
     }
@@ -42,8 +43,9 @@ public class Account {
         setPrimaryOwner(primaryOwner);
         setSecondaryOwner(secondaryOwner);
         setMinimumBalance(minimumBalance);
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
+        setMaintenanceFee(monthlyMaintenanceFee);
         setStatus(Status.ACTIVE);
+        this.chargedDate = null;
     }
 
     public Account(@NotNull  String balance, @NotNull AccountHolder primaryOwner, BigDecimal minimumBalance, BigDecimal monthlyMaintenanceFee) throws Exception {
@@ -52,8 +54,9 @@ public class Account {
         setPrimaryOwner(primaryOwner);
         setSecondaryOwner(secondaryOwner);
         setMinimumBalance(minimumBalance);
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
+        setMaintenanceFee(monthlyMaintenanceFee);
         setStatus(Status.ACTIVE);
+        this.chargedDate = null;
     }
 
     public Money getBalance() {
@@ -100,12 +103,12 @@ public class Account {
         return PENALTYFEE;
     }
 
-    public BigDecimal getMonthlyMaintenanceFee() {
-        return monthlyMaintenanceFee;
+    public BigDecimal getMaintenanceFee() {
+        return maintenanceFee;
     }
 
-    public void setMonthlyMaintenanceFee(BigDecimal monthlyMaintenanceFee) {
-        this.monthlyMaintenanceFee = monthlyMaintenanceFee;
+    public void setMaintenanceFee(BigDecimal maintenanceFee) {
+        this.maintenanceFee = maintenanceFee;
     }
 
     public Status getStatus() {
@@ -126,5 +129,13 @@ public class Account {
 
     public Date getCreationDate() {
         return creationDate;
+    }
+
+    public Date getChargedDate() {
+        return chargedDate;
+    }
+
+    public void setChargedDate(Date chargedDate) {
+        this.chargedDate = chargedDate;
     }
 }

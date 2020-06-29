@@ -35,6 +35,29 @@ public class AccountService {
         Optional<Account> result = accountRepository.findById(id);
         if (!result.isPresent()) throw new Exception("No account found with that id");
         LOGGER.info("Looked for Account" + id);
+        if (result.get().getChargedDate()==null){
+            LocalDate currentDay = LocalDate.now();
+            Date creation = new Date(result.get().getCreationDate().getTime());
+            ZoneId defaultZoneId = ZoneId.systemDefault();
+            LocalDate localCreation = creation.toInstant().atZone(defaultZoneId).toLocalDate();
+            Period p = Period.between(localCreation, currentDay);
+            if(p.getYears()>1) {
+                result.get().getBalance().decreaseAmount(result.get().getMaintenanceFee());
+                result.get().setChargedDate(new Date());
+                accountRepository.save(result.get());
+            }
+        }else {
+            LocalDate currentDay = LocalDate.now();
+            Date charged = new Date(result.get().getChargedDate().getTime());
+            ZoneId defaultZoneId = ZoneId.systemDefault();
+            LocalDate localCharged = charged.toInstant().atZone(defaultZoneId).toLocalDate();
+            Period p = Period.between(localCharged, currentDay);
+            if(p.getYears()>1) {
+                result.get().getBalance().decreaseAmount(result.get().getMaintenanceFee());
+                result.get().setChargedDate(new Date());
+                accountRepository.save(result.get());
+            }
+        }
         return result.get();
         }
 
